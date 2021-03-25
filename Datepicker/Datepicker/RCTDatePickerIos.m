@@ -3,6 +3,7 @@
 #import "RCTConvert+Date.h"
 #import "RCTConvert+Calendar.h"
 #import "RCTConvert+DatePickerMode.h"
+#import "RCTConvert+DatePickerStyle.m"
 #import "UIDatePicker+OnChange.h"
 
 
@@ -68,6 +69,22 @@ RCT_CUSTOM_VIEW_PROPERTY(calendar, NSData, RCTDatePickerIos)
 RCT_CUSTOM_VIEW_PROPERTY(dateFormat, NSString, RCTDatePickerIos)
 {
   self.dateFormat = json;
+}
+
+
+
+RCT_CUSTOM_VIEW_PROPERTY(displayIOS, UIDatePickerStyle, RCTDatePickerIos)
+{
+    UIDatePicker * datePickerInst = ((UIDatePicker *)view);
+
+    if (@available(iOS 13.4, *)) {
+        if (json) {
+            UIDatePickerStyle propValue = [RCTConvert UIDatePickerStyle:json];
+            datePickerInst.preferredDatePickerStyle = propValue;
+        } else {
+            datePickerInst.preferredDatePickerStyle = UIDatePickerStyleAutomatic;
+        }
+    }
 }
 
 RCT_REMAP_VIEW_PROPERTY(mode, datePickerMode, UIDatePickerMode)
